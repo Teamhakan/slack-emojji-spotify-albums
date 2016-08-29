@@ -1,0 +1,16 @@
+{
+  "name": "slack-teamhakan-emojji",
+  "version": "1.0.0",
+  "description": "Download images from spotify for use in slack or whateva",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+  },
+  "engine":"5.9.1",
+  "author": "klowdo",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.74.0",
+    "spotify-web-api-node": "^2.3.5"
+  }
+}
