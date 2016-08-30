@@ -1,9 +1,8 @@
 // Dependencies
 const SpotifyWebApi = require('spotify-web-api-node');
-const Guid = require('Guid');
 const fs = require('fs');
 const request = require('request');
-
+var mkdirp = require('mkdirp');
 var spotifyApi = new SpotifyWebApi();
 
 
@@ -25,18 +24,22 @@ const rename = (string) => string
 .replaceAll('!','')
 
 //Download to file
-var download = function(uri, filename, callback){
-  request.head(uri, function(err, res, body){
+const download = (uri, filename, callback) => {
+  request.head(uri, (err, res, body) =>{
     request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
   });
 };
 //3H7Ez7cwaYw4L3ELy4v3Lc is id of an artist
 // This is used to get all albums
 // d.images[d.images.length-1] is used bcuz the last image is the smalest 64px
-spotifyApi.getArtistAlbums('3H7Ez7cwaYw4L3ELy4v3Lc')
-.then(function(data) {
-  data.body.items.forEach(d =>
-    download(d.images[d.images.length-1].url, `./images/${rename(d.name)}.jpeg`,
-     () => console.log(`done with ${d.name}`))
-  )
-},  console.error);
+//
+//
+mkdirp('./images/', (err) =>{ 
+  spotifyApi.getArtistAlbums('3H7Ez7cwaYw4L3ELy4v3Lc')
+  .then((data) =>{
+    data.body.items.forEach(d =>
+      download(d.images[d.images.length-1].url, `./images/${rename(d.name)}.jpeg`,
+       () => console.log(`done with ${d.name}`))
+    )
+  },  console.error);
+});
